@@ -10,6 +10,7 @@ const SearchPresenter = ({
   handleSubmit,
   error,
 }) => null;
+
 SearchPresenter.propTypes = {
   movieResults: PropTypes.array,
   tvResults: PropTypes.array,
