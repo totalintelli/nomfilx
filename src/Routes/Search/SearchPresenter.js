@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import Section from "../../Components/Section";
+import Message from "../../Components/Message";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -54,6 +55,15 @@ const SearchPresenter = ({
             ))}
           </Section>
         )}
+        {/* error state에 값이 존재하면 text와 color를 Message로 보냄 */}
+        {error && <Message color="#e74c3c" text={error} />}
+        {/* 아무 정보도 찾을 수 없으면 text에 'Nothing found'와 color에 '#95a5a6'을 보냄 */}
+        {tvResults &&
+          movieResults &&
+          tvResults.length === 0 &&
+          movieResults.length === 0 && (
+            <Message text="Nothing found" color="#95a5a6" />
+          )}
       </>
     )}
   </Container>
