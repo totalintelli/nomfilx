@@ -7,22 +7,32 @@ export default class extends React.Component {
     movieResults: null,
     tvResults: null,
     searchTerm: "",
-    loading: true,
+    loading: false,
     error: null,
   };
 
   // 입력한 검색어가 있는지 확인하고 있으면 검색을 한다.
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
     }
   };
 
+  updateTerm = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState({
+      searchTerm: value,
+    });
+  };
+
   searchByTerm = async () => {
     const { searchTerm } = this.state;
+    this.setState({ loading: true });
     try {
-      this.setState({ loading: true });
       const {
         data: { results: movieResults },
       } = await moviesApi.search(searchTerm);
@@ -33,12 +43,14 @@ export default class extends React.Component {
     } catch {
       this.setState({ error: "Can't find results." });
     } finally {
-      this.setState({ laoding: false });
+      this.setState({ loading: false });
     }
   };
 
   render() {
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
+    console.log(`movieResults = ${movieResults}`);
+    console.log(`tvResults = ${tvResults}`);
     return (
       <SearchPresenter
         movieResults={movieResults}
@@ -47,6 +59,7 @@ export default class extends React.Component {
         error={error}
         searchTerm={searchTerm}
         handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
       />
     );
   }
